@@ -1,0 +1,10 @@
+{
+    "rootUserNames": ["root"],
+    "anyoneWritableRepositories": ["qa"],
+    "indexwiseAllowedUsers": {
+        "prod": {
+            "index-for-bob": ["bob"],
+            "index-for-alice": ["alice"]
+        }
+    }
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="iupload">
+<head>
+    <meta charset=UTF-8"/>
+    <title>Uploader</title>
+    <script src="js/vendor/jquery-2.1.1.min.js"></script>
+    <script src="js/vendor/jquery-ui-1.10.4.min.js"></script>
+    <script src="js/vendor/jquery.fileupload.js"></script>
+    <script src="js/vendor/angular.min.js"></script>
+    <script src="js/lib/app.js"></script>
+    <script src="js/lib/service/API.js"></script>
+    <script src="js/lib/domain/UserPermission.js"></script>
+    <script src="js/lib/domain/FileInfo.js"></script>
+    <script src="js/lib/domain/Index.js"></script>
+    <script src="js/lib/domain/IndexRepository.js"></script>
+    <script src="js/lib/service/ModalManager.js"></script>
+    <script src="js/lib/util/PathUtil.js"></script>
+    <script src="js/lib/controller/AppController.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body ng-controller="FileController">
+    <header class="navbar navbar-static-top bs-docs-nav">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="" class="navbar-brand">Imhotep TSV Uploader</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="modal" style='display:block' ng-if="modalManager.showError">
+        <div class="modal-positioner">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="modalManager.closeErrorDialog()"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <img src="images/error-icon.png" width="30px" height="30px"/>&nbsp;&nbsp;
+                        Server returned an error:
+                    </p>
+
+                    <p>
+                    <pre>{{modalManager.errorMessage}}</pre>
+                    </p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+            </div>
+    </div><!-- /.modal -->
+
+    <div class="modal" style="" ng-if="modalManager.showModal">
+        <div class="modal-positioner">
+            <div class="modal-dialog modal-sm modal-align-middle">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>{{modalManager.modalMessage}}</p>
+
+                        <div id="progress" class="progress progress-striped active"
+                             ng-if="modalManager.showModalProgress">
+                            <div class="progress-bar progress-bar-success"
+                                 style="width: {{modalManager.modalProgress}}%"></div>
+                        </div>
+                        <div class="image-wrapper" ng-if="!modalManager.showModalProgress">
+                            <img src="images/ajax-loader.gif"/>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div><!-- /.modal -->
+
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="{{repo.active ? 'active' : ''}}" ng-repeat="repo in repositories">
+            <a href="" ng-click="selectRepository(repo.name)">{{repo.name}}</a>
+        </li>
+        </ul>
+        <div class="row">
+            <div class="sidebar col-md-3">
+                <ul id="indexList" class="nav nav-pills nav-stacked">
+                    <li class="{{index.active ? 'active' : ''}}" ng-repeat="index in indexes">
+                        <a href="" ng-click="selectIndex(index.name)">
+                            {{index.name}}
+
+                        </a>
+                        <button class="btn btn-default btn-xs"
+                                ng-if="userPermission.isWriteAllowed(currentRepositoryName)"
+                                ng-click="deleteIndex(currentRepositoryName, index.name)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </li>
+                </ul>
+                <form class="input-group" ng-submit="createIndex(currentRepositoryName, indexName)">
+                    <input type="text" class="form-control" ng-model="indexName" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-plus"></span></button>
+                    </span>
+                </form>
+            </div>
+            <div class="main col-md-9">
+
+                <div id="header-tool-box" class="row" >
+                    <div class="search-form col-md-10" >
+                        <form class="input-group" ng-submit="">
+                            <input type="text" class="form-control" ng-model="searchQuery" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </form>
+                    </div>
+                    <div class="upload-form-wrapper btn btn-default col-md-2"
+                         ng-class="{disabled: !userPermission.isWriteAllowed(currentRepositoryName, currentIndexName)}">
+                    <span>Upload TSV</span>
+                        <input id="fileUpload" class="upload-form" name="file" type="file" data-url="repository/{{currentRepositoryName}}/index/{{currentIndexName}}/file/"/>
+                    </div>
+                </div>
+                <div class="alert alert-warning"
+                     ng-if="!userPermission.isWriteAllowed(currentRepositoryName, currentIndexName)">
+                    You are not allowed to upload, create, delete things in this index.
+                </div>
+                <table id='fileList' class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size [b]</th>
+                        <th>Status</th>
+                        <th>Uploaded At</th>
+                        <th>Operations</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="file in files">
+                        <td>{{file.getName()}}</td>
+                        <td>{{file.getSize()}}</td>
+                        <td>
+                                <span class="label {{file.getLabelClass()}}">
+                                    {{file.status}}
+                                </span>
+                            </td>
+                        <td>{{file.getLastModifiedAt() | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>
+                            <button class="btn btn-primary"
+                                    ng-click="downloadFile(currentRepositoryName, currentIndexName, file.status, file.name)">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                                </button>
+                            <button class="btn btn-default"
+                                    ng-class="{disabled: !userPermission.isWriteAllowed(currentRepositoryName, currentIndexName)}"
+                                    ng-click="deleteFile(currentRepositoryName, currentIndexName, file.getStatus(), file.getName())">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
