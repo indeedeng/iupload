@@ -110,7 +110,7 @@
     };
 
     $scope.updateIndexList = function (repositoryName) {
-        $scope.modalManager.openModalDialog("Loading indexes ...", false);
+        $scope.modalManager.openModalDialog("Loading datasets ...", false);
         API.get('./repository/' + repositoryName + '/index/')
             .success(function (data) {
                 $scope.indexes = [];
@@ -126,7 +126,7 @@
         if (!indexName) {
             return;
         }
-        if (confirm("Are you sure to create an index named '" + indexName + "'?")) {
+        if (confirm("Are you sure to create a dataset named '" + indexName + "'?")) {
             API.post('./repository/' + repositoryName + '/index/',
                 jQuery.param({name: indexName}),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
@@ -138,7 +138,7 @@
     };
 
     $scope.deleteIndex = function (repositoryName, indexName) {
-        if (confirm("Are you sure to delete the index named '" + indexName + "'?")) {
+        if (confirm("Are you sure to delete the dataset named '" + indexName + "'?")) {
             API.delete('./repository/' + repositoryName + '/index/' + indexName + "/")
                 .success(function () {
                     $scope.updateIndexList(repositoryName);
