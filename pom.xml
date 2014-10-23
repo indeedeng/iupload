@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.indeed</groupId>
 		<artifactId>oss-parent</artifactId>
-		<version>11</version>
+		<version>12</version>
 	</parent>
 
 	<groupId>com.indeed</groupId>
@@ -22,9 +22,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/indeedeng/iql</url>
-		<connection>scm:git:https://github.com/indeedeng/iql.git</connection>
-		<developerConnection>scm:git:git@github.com:indeedeng/iql.git</developerConnection>
+		<url>https://github.com/indeedeng/iupload</url>
+		<connection>scm:git:https://github.com/indeedeng/iupload.git</connection>
+		<developerConnection>scm:git:git@github.com:indeedeng/iupload.git</developerConnection>
 	</scm>
 
 	<build>
