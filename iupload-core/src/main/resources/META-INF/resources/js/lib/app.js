@@ -46,6 +46,12 @@
             }
         }).bind('fileuploadsubmit', function (e, data) {
             var $s = getAngularScope();
+            if (! $s.currentIndexName || $s.currentIndexName == "") {
+                e.preventDefault();
+                $s.modalManager.openErrorDialog("Please create or select a dataset before uploading.");
+                $s.$apply();
+                return;
+            }
             data.url = "./repository/" + $s.currentRepositoryName + "/index/" + $s.currentIndexName + "/file/";
             $s.modalManager.openModalDialog("Uploading ...", true);
             $s.$apply();
