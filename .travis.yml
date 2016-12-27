@@ -1,0 +1,11 @@
+language: java
+jdk:
+    - oraclejdk7
+
+script: mvn package
+
+addons:
+    artifacts:
+        s3_region: "us-west-2"
+        paths:
+        - $(git ls-files -o */target/iupload*.*ar | tr "\n" ":")
