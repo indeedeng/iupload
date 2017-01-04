@@ -6,6 +6,9 @@ TSV uploader webapp for an Imhotep cluster
 ## Documentation
 See the [quick start page](http://indeedeng.github.io/imhotep/docs/quick-start/) for instructions. 
 
+## Continuous Build
+https://travis-ci.org/indeedeng/iupload
+
 ## Discussion
 Ask and answer questions in our Q&A forum for Imhotep: [indeedeng-imhotep-users](https://groups.google.com/forum/#!forum/indeedeng-imhotep-users)
 
