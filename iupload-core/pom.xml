@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.indeed</groupId>
         <artifactId>iupload-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
 	<artifactId>iupload-core</artifactId>
@@ -137,11 +137,17 @@
 			</exclusions>
 		</dependency>
 
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-aws</artifactId>
+            <version>2.6.0-cdh5.4.7</version>
+        </dependency>
+
         <!-- Needed to replace dep in hadoop on a broken version -->
         <dependency>
             <groupId>net.java.dev.jets3t</groupId>
             <artifactId>jets3t</artifactId>
-            <version>0.7.1</version>
+            <version>0.9.0</version>
         </dependency>
 
 		<!--Spring Dependencies -->
