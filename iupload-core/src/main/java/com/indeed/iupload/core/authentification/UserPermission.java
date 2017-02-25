@@ -44,7 +44,13 @@ public class UserPermission {
     }
 
     @JsonProperty
+    @Deprecated
     public boolean hasRootAccess() {
+        return isRoot;
+    }
+
+    @JsonProperty
+    public boolean isRootAccess() {
         return isRoot;
     }
 
