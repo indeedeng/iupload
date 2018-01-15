@@ -150,6 +150,12 @@
             <version>0.9.0</version>
         </dependency>
 
+                <dependency>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                    <version>${jackson.annotations.version}</version>
+                </dependency>
+
 		<!--Spring Dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -181,6 +187,7 @@
 		<indeed-util.version>1.0.23</indeed-util.version>
 		<spring.version>4.0.2.RELEASE</spring.version>
 		<commons-io.version>2.2</commons-io.version>
+                <jackson.annotations.version>2.6.7</jackson.annotations.version>
 	</properties>
 
 </project>
