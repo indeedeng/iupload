@@ -62,6 +62,9 @@ public class AppController {
     @Value("${use.qa.repository}")
     private String useQaRepo;
 
+    @Value("${file.size.limit.bytes:0}")
+    private long fileSizeLimitBytes;
+
     @Autowired
     private UserPermissionProvider permissionProvider;
 
@@ -260,6 +263,9 @@ public class AppController {
         }
         if (file.isEmpty()) {
             return BasicResponse.error("File is not specified");
+        }
+        if(fileSizeLimitBytes > 0 && file.getSize() > fileSizeLimitBytes) {
+            return BasicResponse.error("Uploaded file is too big. Maximum size allowed in bytes: " + fileSizeLimitBytes);
         }
         IndexRepository repository = getRepository(repoId);
         Index index = repository.find(indexName);
