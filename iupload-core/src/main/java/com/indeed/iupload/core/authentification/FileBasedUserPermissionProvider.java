@@ -85,7 +85,7 @@ public class FileBasedUserPermissionProvider implements UserPermissionProvider {
     }
 
     @Override
-    @Scheduled(cron = "* */5 * * * *")
+    @Scheduled(cron = "26 */5 * * * *")
     public void reload() throws IOException {
         InputStream is = userPermissionConfigLoader.getConfigJsonStream();
         try {
