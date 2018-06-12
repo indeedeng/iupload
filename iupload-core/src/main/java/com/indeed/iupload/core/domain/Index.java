@@ -81,6 +81,7 @@ public class Index {
         return fileList;
     }
 
+    @JsonIgnore
     public List<FileInfo> getFileList() throws IOException {
         List<FileInfo> fileList = new ArrayList<FileInfo>();
         for (FileStatus status : FileStatus.values()) {
