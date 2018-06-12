@@ -134,7 +134,7 @@ public class AppController {
     @ExceptionHandler(Exception.class)
     public
     @ResponseBody
-    BasicResponse handleGeneralException(IOException e) {
+    BasicResponse handleGeneralException(Exception e) {
         log.error(e.getMessage());
         return BasicResponse.error(e.getMessage());
     }
