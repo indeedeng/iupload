@@ -1,10 +1,12 @@
 iupload
 =======
 
+![Lifecycle](https://img.shields.io/osslifecycle/indeedeng/iupload.svg)
+
 TSV uploader webapp for an Imhotep cluster
 
 ## Documentation
-See the [quick start page](http://indeedeng.github.io/imhotep/docs/quick-start/) for instructions. 
+See the [quick start page](http://indeedeng.github.io/imhotep/docs/quick-start/) for instructions.
 
 ## Continuous Build
 https://travis-ci.org/indeedeng/iupload
@@ -24,6 +26,8 @@ Ask and answer questions in our Q&A forum for Imhotep: [indeedeng-imhotep-users]
 ## Contributing
 http://indeedeng.github.io/imhotep/docs/contributing/
 
-## License
+## Code of Conduct
+This project is governed by the [Contributor Covenant v 1.4.1](CODE_OF_CONDUCT.md)
 
-[Apache License Version 2.0](https://github.com/indeedeng/imhotep/blob/master/LICENSE)
+## License
+[Apache License Version 2.0](LICENSE)
